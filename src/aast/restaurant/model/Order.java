@@ -11,7 +11,7 @@ public class Order implements Serializable {
     private Date orderedAt;
     private boolean delivered;
     private int userId;
-
+    private String notes;
 
     public String getAddress() {
         return address;
@@ -60,5 +60,13 @@ public class Order implements Serializable {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

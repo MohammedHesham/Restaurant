@@ -10,6 +10,7 @@ public class Order implements Serializable {
     private double totalPrice;
     private Date orderedAt;
     private boolean delivered;
+    private int userId;
 
 
     public String getAddress() {
@@ -53,4 +54,11 @@ public class Order implements Serializable {
     }
 
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }

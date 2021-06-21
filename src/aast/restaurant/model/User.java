@@ -3,6 +3,7 @@ package aast.restaurant.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
+    private int userId;
     private String username;
     private String password;
     private String email;
@@ -45,7 +46,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return username + "," + password + "," + email + "," + isElite + "," + active;
+        return userId + "+" + username + "," + password + "," + email + "," + isElite + "," + active;
     }
 
     public String getAddress() {
@@ -62,5 +63,13 @@ public class User implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

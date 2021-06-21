@@ -3,6 +3,7 @@ package aast.restaurant.model;
 import java.io.Serializable;
 
 public class Item implements Serializable {
+    private int itemId;
     private String name;
     private double price;
     private byte[] image;
@@ -45,5 +46,13 @@ public class Item implements Serializable {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 }

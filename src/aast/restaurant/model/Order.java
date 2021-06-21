@@ -9,6 +9,7 @@ public class Order implements Serializable {
     private List<Item> items;
     private double totalPrice;
     private Date orderedAt;
+    private Date deliveredAt;
     private boolean delivered;
     private int userId;
     private String notes;
@@ -68,5 +69,13 @@ public class Order implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public Date getDeliveredAt() {
+        return deliveredAt;
+    }
+
+    public void setDeliveredAt(Date deliveredAt) {
+        this.deliveredAt = deliveredAt;
     }
 }

@@ -9,7 +9,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class WelcomePage {
-    private RegistrationFormApplication registrationFormApplication = new RegistrationFormApplication();
+    private final RegistrationForm registrationForm = new RegistrationForm();
+    private final LoginForm loginForm = new LoginForm();
 
     public void displayWelcomePage(Stage stage) {
         VBox vBox = new VBox(10);
@@ -21,21 +22,25 @@ public class WelcomePage {
 
         vBox.getChildren().addAll(welcomeText, signUp, login);
 
-        login.setOnAction(actionEvent -> displayLoginForm(stage));
+        signUp.setOnAction(actionEvent -> displaySignupForm(stage));
 
-        signUp.setOnAction(actionEvent -> {
-            System.err.println("SIGNUP");
-
+        login.setOnAction(actionEvent -> {
+            displayLoginForm(stage);
         });
         vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vBox, 500, 300);
         stage.setScene(scene);
     }
 
-    private void displayLoginForm(Stage stage) {
-        GridPane registrationFormPane = registrationFormApplication.createRegistrationFormPane();
+    private void displaySignupForm(Stage stage) {
+        GridPane registrationFormPane = registrationForm.createRegistrationFormPane();
 
 
         stage.getScene().setRoot(registrationFormPane);
+    }
+
+    private void displayLoginForm(Stage stage) {
+        GridPane loginFormPane = loginForm.createLoginFormPane();
+        stage.getScene().setRoot(loginFormPane);
     }
 }

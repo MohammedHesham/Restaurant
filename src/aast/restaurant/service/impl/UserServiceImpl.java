@@ -1,6 +1,5 @@
 package aast.restaurant.service.impl;
 
-import aast.restaurant.model.Item;
 import aast.restaurant.model.User;
 import aast.restaurant.service.UserService;
 
@@ -13,7 +12,14 @@ public class UserServiceImpl implements UserService {
     private List<User> users = new ArrayList<>();
 
     public UserServiceImpl() {
+        loadUsers();
+    }
 
+    public static void main(String[] args) {
+        UserServiceImpl userService = new UserServiceImpl();
+        for (User user : userService.users) {
+            System.err.println(user.getUsername());
+        }
     }
 
     @Override
@@ -22,14 +28,18 @@ public class UserServiceImpl implements UserService {
         saveAllUsers(users);
     }
 
-    @Override
-    public void login(User user) {
-
-    }
-
     public boolean userExistsByMail(String email) {
         for (User user : users) {
             if (user.getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean userExistsByUsername(String username) {
+        for (User user : users) {
+            if (user.getUsername().equalsIgnoreCase(username)) {
                 return true;
             }
         }
@@ -48,6 +58,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deactivateAccount(User user) {
+
+    }
+
+    @Override
+    public User performLogin(String mail, String password) {
+        for (User user : users) {
+            if (user.getEmail().equalsIgnoreCase(mail) && user.getPassword().equals(password))
+                return user;
+        }
+        return null;
 
     }
 

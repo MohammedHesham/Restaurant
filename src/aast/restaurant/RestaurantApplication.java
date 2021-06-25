@@ -19,7 +19,7 @@ public class RestaurantApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        readDummyItems();
+//        readDummyItems();
         welcomePage.displayWelcomePage(stage);
         stage.show();
     }

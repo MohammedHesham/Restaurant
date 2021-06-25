@@ -1,5 +1,6 @@
 package aast.restaurant.ui;
 
+import aast.restaurant.model.User;
 import aast.restaurant.service.impl.UserServiceImpl;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -16,12 +17,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static aast.restaurant.errors.RegistrationError.*;
+import static aast.restaurant.ui.Validator.*;
 
-class RegistrationFormApplication {
+class RegistrationForm {
 
     private UserServiceImpl userService;
 
-    RegistrationFormApplication() {
+    RegistrationForm() {
         userService = new UserServiceImpl();
     }
 
@@ -56,7 +58,7 @@ class RegistrationFormApplication {
         GridPane.setHalignment(headerLabel, HPos.CENTER);
         GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
-        Label nameLabel = new Label("Full Name : ");
+        Label nameLabel = new Label("Username : ");
         gridPane.add(nameLabel, 0, 1);
 
         TextField nameField = new TextField();
@@ -108,6 +110,11 @@ class RegistrationFormApplication {
                 return;
             }
 
+            if (userService.userExistsByUsername(nameField.getText())) {
+                showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), FORM_ERROR, "This username already exists!");
+                return;
+            }
+
             if (!validateField(gridPane, passwordField, ENTER_PASSWORD)) return;
             if (!validateField(gridPane, confirmPasswordField, CONFIRM_PASSWORD)) return;
 
@@ -115,16 +122,15 @@ class RegistrationFormApplication {
 
             showAlert(Alert.AlertType.CONFIRMATION, gridPane.getScene().getWindow(), "Registration Successful!", "Welcome " + nameField.getText());
 
+            User user = new User();
+            user.setActive(true);
+            user.setEmail(emailField.getText());
+            user.setPassword(passwordField.getText());
+            user.setUsername(nameField.getText());
+            userService.signup(user);
         });
     }
 
-    private boolean validateField(GridPane gridPane, TextField textField, String errorMsg) {
-        if (textField.getText().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), FORM_ERROR, errorMsg);
-            return false;
-        }
-        return true;
-    }
 
     private boolean comparePasswords(GridPane gridPane, TextField password, TextField confirm) {
         if (!password.getText().equals(confirm.getText())) {
@@ -132,22 +138,6 @@ class RegistrationFormApplication {
             return false;
         }
         return true;
-    }
-
-    private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.initOwner(owner);
-        alert.show();
-    }
-
-
-    private boolean isValidEmailAddress(String email) {
-        Pattern pattern = Pattern.compile("^.+@.+\\..+$");
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 
 

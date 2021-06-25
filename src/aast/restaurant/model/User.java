@@ -44,10 +44,10 @@ public class User implements Serializable {
         isElite = elite;
     }
 
-    @Override
-    public String toString() {
-        return userId + "+" + username + "," + password + "," + email + "," + isElite + "," + active;
-    }
+//    @Override
+//    public String toString() {
+//        return userId + "+" + username + "," + password + "," + email + "," + isElite + "," + active;
+//    }
 
     public String getAddress() {
         return address;

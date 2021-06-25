@@ -2,13 +2,14 @@ package aast.restaurant.ui;
 
 import aast.restaurant.model.User;
 import aast.restaurant.service.impl.UserServiceImpl;
+import aast.restaurant.util.ImageUtil;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Window;
@@ -47,16 +48,23 @@ class RegistrationForm {
 
         gridPane.getColumnConstraints().addAll(columnOneConstraints, columnTwoConstrains);
         addUIControls(gridPane);
+
         return gridPane;
     }
 
 
     private void addUIControls(GridPane gridPane) {
-        Label headerLabel = new Label("Registration Form");
-        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        gridPane.add(headerLabel, 0, 0, 2, 1);
-        GridPane.setHalignment(headerLabel, HPos.CENTER);
-        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
+//        Label headerLabel = new Label("Registration Form");
+//        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+//        gridPane.add(headerLabel, 0, 0, 2, 1);
+//        GridPane.setHalignment(headerLabel, HPos.CENTER);
+//        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
+
+        ImageView icon = ImageUtil.getIcon();
+        gridPane.add(icon, 0, 0, 2, 1);
+        GridPane.setHalignment(icon, HPos.CENTER);
+        GridPane.setMargin(icon, new Insets(20, 0, 20, 0));
+
 
         Label nameLabel = new Label("Username : ");
         gridPane.add(nameLabel, 0, 1);

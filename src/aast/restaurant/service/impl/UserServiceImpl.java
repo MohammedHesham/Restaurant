@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
         try {
             File file = new File("users.txt");
             if (!file.exists()) {
+                //initialize users file with an empty list
                 List<User> users = new ArrayList<>();
                 saveAllUsers(users);
             }
@@ -85,6 +86,11 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return users;
     }
 
     private void saveAllUsers(List<User> users) {

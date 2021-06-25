@@ -1,32 +1,33 @@
 package aast.restaurant.ui;
 
+import aast.restaurant.model.Admin;
 import aast.restaurant.model.User;
-import aast.restaurant.service.UserService;
-import aast.restaurant.service.impl.UserServiceImpl;
+import aast.restaurant.service.AdminService;
+import aast.restaurant.service.impl.AdminServiceImpl;
 import aast.restaurant.util.ImageUtil;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import static aast.restaurant.errors.RegistrationError.*;
 import static aast.restaurant.ui.Validator.*;
+import static aast.restaurant.ui.Validator.showAlert;
 
-public class LoginForm {
-    private final UserService userService;
+public class AdminLoginForm {
+    private final AdminService adminService;
 
-    public LoginForm() {
-        userService = new UserServiceImpl();
+    public AdminLoginForm() {
+        adminService = new AdminServiceImpl();
     }
 
-    GridPane createLoginFormPane(Stage stage) {
+    public GridPane createLoginFormPane(Stage stage) {
         GridPane gridPane = new GridPane();
 
         gridPane.setAlignment(Pos.CENTER);
@@ -37,6 +38,9 @@ public class LoginForm {
 
         gridPane.setVgap(10);
 
+
+        gridPane.setBackground(
+                new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         ColumnConstraints columnOneConstraints = new ColumnConstraints(100, 100, Double.MAX_VALUE);
         columnOneConstraints.setHalignment(HPos.RIGHT);
@@ -50,23 +54,17 @@ public class LoginForm {
     }
 
     private void addUIControls(Stage stage, GridPane gridPane) {
-//        Label headerLabel = new Label("Welcome to our restaurant");
-//        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-//        gridPane.add(headerLabel, 0, 0, 2, 1);
-//        GridPane.setHalignment(headerLabel, HPos.CENTER);
-
         ImageView icon = ImageUtil.getIcon();
         gridPane.add(icon, 0, 0, 2, 1);
         GridPane.setHalignment(icon, HPos.CENTER);
         GridPane.setMargin(icon, new Insets(20, 0, 20, 0));
-//        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
-        Label mailLabel = new Label("Email : ");
-        gridPane.add(mailLabel, 0, 1);
+        Label nameLabel = new Label("Username : ");
+        gridPane.add(nameLabel, 0, 1);
 
-        TextField mailField = new TextField();
-        mailField.setPrefHeight(40);
-        gridPane.add(mailField, 1, 1);
+        TextField nameField = new TextField();
+        nameField.setPrefHeight(40);
+        gridPane.add(nameField, 1, 1);
 
 
         Label passwordLabel = new Label("Password : ");
@@ -85,13 +83,11 @@ public class LoginForm {
         GridPane.setMargin(submitButton, new Insets(20, 0, 20, 0));
 
         submitButton.setOnAction(event -> {
-            if (!validateField(gridPane, passwordField, ENTER_MAIL)) return;
-            if (!isValidEmailAddress(mailField.getText())) {
-                showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), FORM_ERROR, INVALID_MAIL);
-                return;
-            }
-            User user = userService.performLogin(mailField.getText(), passwordField.getText());
-            if (user == null) {
+            if (!validateField(gridPane, nameField, ENTER_NAME)) return;
+            if (!validateField(gridPane, passwordField, ENTER_PASSWORD)) return;
+
+            Admin admin = adminService.login(nameField.getText(), passwordField.getText());
+            if (admin == null) {
                 showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Login Failed!", "Invalid mail or password!");
                 return;
             }

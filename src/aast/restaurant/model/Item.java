@@ -6,6 +6,7 @@ public class Item implements Serializable {
     private int itemId;
     private String name;
     private double price;
+    private String description;
     private byte[] image;
     private int likes;
 
@@ -54,5 +55,13 @@ public class Item implements Serializable {
 
     public void setItemId(int itemId) {
         this.itemId = itemId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

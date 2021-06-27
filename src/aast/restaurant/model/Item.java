@@ -7,7 +7,7 @@ public class Item implements Serializable {
     private String name;
     private double price;
     private String description;
-    private byte[] image;
+    private String imageUrl;
     private int likes;
 
 
@@ -33,13 +33,6 @@ public class Item implements Serializable {
         return name + "," + price;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
 
     public int getLikes() {
         return likes;
@@ -63,5 +56,13 @@ public class Item implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

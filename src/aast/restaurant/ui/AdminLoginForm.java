@@ -67,12 +67,14 @@ public class AdminLoginForm {
         gridPane.add(nameField, 1, 1);
 
 
+        nameField.setText("admin");
         Label passwordLabel = new Label("Password : ");
         gridPane.add(passwordLabel, 0, 2);
 
         PasswordField passwordField = new PasswordField();
         passwordField.setPrefHeight(40);
         gridPane.add(passwordField, 1, 2);
+        passwordField.setText("admin");
 
         Button submitButton = new Button("Confirm");
         submitButton.setPrefHeight(40);

@@ -1,32 +1,31 @@
 package aast.restaurant.ui;
 
+import aast.restaurant.model.Item;
 import aast.restaurant.model.User;
 import aast.restaurant.service.UserService;
+import aast.restaurant.service.impl.RestaurantServiceImpl;
 import aast.restaurant.service.impl.UserServiceImpl;
 import aast.restaurant.util.ImageUtil;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class AdminMainPage {
 
     private final UserService userService;
-    private final ImageView profileImage;
+    private final RestaurantServiceImpl restaurantService;
 
     public AdminMainPage() {
         userService = new UserServiceImpl();
-        profileImage = ImageUtil.getProfileIcon();
-
-        if (profileImage != null) {
-            profileImage.setFitHeight(200);
-            profileImage.setFitWidth(200);
-        }
+        restaurantService = new RestaurantServiceImpl();
 
     }
 
@@ -41,18 +40,25 @@ public class AdminMainPage {
 
         Tab tab1 = new Tab("Users");
         tab1.setClosable(false);
-//        ObservableList<User> data = FXCollections.observableArrayList();
-//        data.addAll(userService.getAllUsers());
-//
-//        final ListView<User> listView = new ListView<>(data);
-//        listView.setCellFactory(listView1 -> new CustomListCell());
-//
-//        StackPane root = new StackPane();
-//        root.getChildren().add(listView);
-//        tab1.setContent(root);
+        List<User> users = userService.getAllUsers();
+        List<Item> items = restaurantService.getMenuItems();
+        ListView<String> names = new ListView<>();
+        for (User user : users) {
+            names.getItems().add(user.getUsername());
+        }
 
+        ListView<User> usersListView = new ListView<>();
+        usersListView.getItems().addAll(users);
+        fillUsersTabContent(usersListView);
+        tab1.setContent(usersListView);
+
+
+        ListView<Item> itemListView = new ListView<>();
+        itemListView.getItems().addAll(items);
+        fillItemsTabContent(itemListView);
         Tab tab2 = new Tab("Items");
         tab2.setClosable(false);
+        tab2.setContent(itemListView);
 
         Tab tab3 = new Tab("Orders");
         tab3.setClosable(false);
@@ -63,31 +69,63 @@ public class AdminMainPage {
     }
 
 
-//    private class CustomListCell extends ListCell<User> {
-//        private final HBox content;
-//        private final Text name;
-//        private final Text price;
-//
-//        public CustomListCell() {
-//            super();
-//            name = new Text();
-//            price = new Text();
-//            VBox vBox = new VBox(name, price);
-//            content = new HBox(profileImage, vBox);
-//            content.setSpacing(10);
-//        }
-//
-//        @Override
-//        protected void updateItem(User item, boolean empty) {
-//            super.updateItem(item, empty);
-//            if (item != null && !empty) { // <== test for null item and empty parameter
-//                name.setText(item.getUsername());
-//                price.setText(String.format("%d $", 10));
-//                setGraphic(content);
-//            } else {
-//                setGraphic(null);
-//            }
-//        }
-//    }
+    private void fillUsersTabContent(ListView<User> listView) {
+        listView.setCellFactory(param -> new ListCell<User>() {
+
+            private final ImageView imageView = ImageUtil.getProfileIcon();
+            private final Label label = new Label();
+            private final Label label2 = new Label();
+            private final VBox vBox = new VBox(5);
+            private final BorderPane bp = new BorderPane(vBox, null, null, null, imageView);
+
+            @Override
+            protected void updateItem(User item, boolean empty) {
+                if (item == null || empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    if (vBox.getChildren().isEmpty())
+                        vBox.getChildren().addAll(label, label2);
+                    label.setText(item.getUsername());
+                    Font font = Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 16);
+                    label.setFont(font);
+
+                    label2.setText(item.getEmail());
+                    setGraphic(bp);
+                }
+            }
+        });
+    }
+
+    private void fillItemsTabContent(ListView<Item> listView) {
+        listView.setCellFactory(param -> new ListCell<Item>() {
+
+            private ImageView imageView = null;
+            private final Label label = new Label();
+            private final Text label2 = new Text();
+            private final VBox vBox = new VBox(5);
+            private final BorderPane bp = new BorderPane(vBox, null, null, null, imageView);
+
+            @Override
+            protected void updateItem(Item item, boolean empty) {
+                if (item == null || empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    if (vBox.getChildren().isEmpty())
+                        vBox.getChildren().addAll(label, label2);
+                    label.setText(item.getName());
+                    imageView = ImageUtil.toImageView(item.getItemId() + ".png");
+                    Font font = Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 16);
+
+                    label.setFont(font);
+                    label2.setText(item.getDescription());
+                    label2.setWrappingWidth(200);
+
+                    setGraphic(bp);
+                }
+            }
+        });
+    }
 
 }

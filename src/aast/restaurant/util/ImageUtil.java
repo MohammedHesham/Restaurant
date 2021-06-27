@@ -76,7 +76,22 @@ public class ImageUtil {
     public static ImageView getProfileIcon() {
         //creating the image object
         try {
-            InputStream stream = new FileInputStream("profile.jpg");
+            InputStream stream = new FileInputStream("profile.png");
+            Image image = new Image(stream);
+            //Creating the image view
+            javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView();
+            //Setting image to the image view
+            imageView.setImage(image);
+            return imageView;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static ImageView toImageView(String path) {
+        //creating the image object
+        try {
+            InputStream stream = new FileInputStream(path);
             Image image = new Image(stream);
             //Creating the image view
             javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView();

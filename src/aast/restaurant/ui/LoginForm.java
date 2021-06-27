@@ -95,8 +95,7 @@ public class LoginForm {
                 showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Login Failed!", "Invalid mail or password!");
                 return;
             }
-            AdminMainPage adminMainPage = new AdminMainPage();
-            adminMainPage.displayMainPage(stage);
+
 
         });
     }
